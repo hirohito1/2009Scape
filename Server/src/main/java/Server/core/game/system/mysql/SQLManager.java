@@ -17,23 +17,9 @@ import java.sql.SQLException;
 public final class SQLManager {
 	
 	/**
-	 * If the sql manager is locally hosted.
+	 * If the sql manager is locally hosted. Generally you never should change this. Ignore this.
 	 */
 	public static final boolean LOCAL = false;
-
-	public static String SQL_SERVER_ADDRESS;
-
-	/**
-	 * The username of the user.
-	 */
-	public static String USERNAME;
-
-	/**
-	 * The password of the user.
-	 */
-	public static String PASSWORD;
-
-	public static String PORT;
 
     /**
      * The database URL.
@@ -58,13 +44,6 @@ public final class SQLManager {
 	 * Initializes the sql manager.
 	 */
 	public static void init() {
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-			initialized = false;
-			return;
-		}
 		initialized = true;
 		SystemManager.getSystemConfig().parse();
 	}
@@ -89,9 +68,9 @@ public final class SQLManager {
 	 * @return The connection.
 	 */
 	public static Connection getConnection() {
-		DATABASE_URL  = SQL_SERVER_ADDRESS + ":" + PORT + "/" + ServerConstants.DATABASE_NAME;
+		DATABASE_URL  = ServerConstants.DATABASE_ADDRESS + ":" + ServerConstants.DATABASE_PORT + "/" + ServerConstants.DATABASE_NAME + "?useTimezone=true&serverTimezone=UTC";
 		try {
-			return DriverManager.getConnection("jdbc:mysql://" +   DATABASE_URL, USERNAME, PASSWORD);
+			return DriverManager.getConnection("jdbc:mysql://" +   DATABASE_URL, ServerConstants.DATABASE_USER, ServerConstants.DATABASE_PASS);
 		} catch (SQLException e) {
 			SystemLogger.error(SQLManager.class, "Error: Mysql error message=" + e.getMessage() + ".");
 		}

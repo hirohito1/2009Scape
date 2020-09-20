@@ -23,7 +23,7 @@ public class TraibornDialogue extends DialoguePlugin {
 	/**
 	 * Represents the bones item.
 	 */
-	private static final Item BONES = new Item(526, 25);
+	private static final Item[] BONES = {new Item(526, 25), new Item(2530, 25)};
 
 	/**
 	 * Represents the animation of giving the key.
@@ -169,7 +169,7 @@ public class TraibornDialogue extends DialoguePlugin {
 				end();
 				break;
 			case 380:
-				if (player.getInventory().containsItem(BONES)) {
+				if (player.getInventory().containsItem(BONES[0]) || player.getInventory().containsItem(BONES[1])) {
 					player("I have some bones.");
 					stage = 382;
 				} else {
@@ -199,11 +199,11 @@ public class TraibornDialogue extends DialoguePlugin {
 				ObjectBuilder.add(object);
 				npc.faceLocation(object.getLocation());
 				npc.animate(ANIMATION);
-				if (!player.getInventory().containsItem(BONES)) {
+				if (!player.getInventory().containsItem(BONES[0]) && !player.getInventory().containsItem(BONES[1])) {
 					end();
 					return true;
 				}
-				if (player.getInventory().remove(BONES)) {
+				if (player.getInventory().remove(BONES[0]) || player.getInventory().remove(BONES[1])) {
 					player.removeAttribute("demon-slayer:traiborn");
 					player.getInventory().add(DemonSlayer.THIRD_KEY);
 					interpreter.sendItemMessage(DemonSlayer.THIRD_KEY.getId(), "Traiborn hands you a key.");
@@ -255,7 +255,7 @@ public class TraibornDialogue extends DialoguePlugin {
 
 	/**
 	 * Method used to handle the default button id.
-	 * @param buttonId the buttton id.
+	 * @param buttonId the button id.
 	 */
 	private final void handleDefault(int buttonId) {
 		switch (stage) {
@@ -266,7 +266,7 @@ public class TraibornDialogue extends DialoguePlugin {
 		case 1:
 			switch (buttonId) {
 			case 1:
-				interpreter.sendDialogues(player, FacialExpression.HALF_GUILTY, "What's a thingumywut?");
+				interpreter.sendDialogues(player, FacialExpression.HALF_GUILTY, "What's a thingummywut?");
 				stage = 10;
 				break;
 			case 2:
@@ -284,7 +284,7 @@ public class TraibornDialogue extends DialoguePlugin {
 			stage = 12;
 			break;
 		case 12:
-			interpreter.sendOptions("Select an Option", "Err you just called me a thingymummywut.", "Tell me what they look like and I'll mask 'em.");
+			interpreter.sendOptions("Select an Option", "Err you just called me a thingummywut.", "Tell me what they look like and I'll mask 'em.");
 			stage = 13;
 			break;
 		case 13:
